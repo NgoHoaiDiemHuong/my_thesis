@@ -1,0 +1,286 @@
+html{
+font-family: "Roboto",Arial,Lucida Sans,consolas,sans-serif;
+}
+*{
+    box-sizing: border-box;
+}
+
+body {
+background-color: #ECEFF1;
+}
+/* For mobile */
+
+/*For pc*/
+.container{
+    width: 90%;
+    margin-left: 5%;
+    }
+
+@media screen and (max-width: 480px){
+    .container{
+    width: 100%;
+    }
+}
+
+
+.mainHeader nav{
+    width: 100%;
+    background-color: #bdc3c7;
+    height: 40px;
+    margin-bottom: 0;
+    }
+    .mainHeader nav ul{
+        list-style: none;
+        margin: 0 auto;
+    }
+    .mainHeader nav ul li{
+        display: inline;
+        float: left;
+
+    }
+    .mainHeader nav ul li a{
+    font-size: 90%;
+    font-weight: bold;
+    text-decoration-line: none;
+    padding: 8px;
+    /*khong gach chan*/
+    }
+    .mainHeader nav a:link, .mainHeader nav a:visited{
+    color: #000000;
+    display: inline-block;
+    padding: 10px 25px;
+    /*font-style: normal;*/
+    }
+
+    .mainHeader nav a:hover, .mainHeader nav a:active{
+    /*background-color: #6D941F;*/
+    color: #F4434A;
+    text-shadow: none;
+
+    }
+    /*Dinh nghia secondHeader*/
+    div.secondHeader {
+        background-color: #262626;
+        height: 60px;
+        margin-bottom: 0;
+      /* -webkit-box-shadow: 5px 6px 5px 5px rgba(0,0,0,0.5);
+        -moz-box-shadow: 5px 6px 5px 5px rgba(0,0,0,0.5);
+        box-shadow: 5px 6px 5px 5px rgba(0,0,0,0.5);*/
+    }
+    .secondHeader  ul{
+        list-style: none;
+        margin: 0 0;
+    }
+    .secondHeader  ul li{
+        display: inline;
+        float: left;
+        margin-right: 7px;
+        background-color: #262626;
+
+
+
+        /*padding: 15px 15px;*/
+    }
+    .secondHeader  ul li a{
+    font-size: 140%;
+    font-weight: bold;
+    text-decoration-line: none;
+    padding: 8px;
+
+    /*khong gach chan*/
+    }
+    .secondHeader  a:link, .secondHeader  a:visited{
+    color: #F8F8F8;
+    display: inline-block;
+    padding: 10px 25px 24px;
+    /*font-style: normal;*/
+    }
+
+    .secondHeader a:hover, .secondHeader  a:active{
+        background-color: #F4434A;
+    color: #F8F8F8;
+    text-shadow: none;
+
+    }
+
+    /*Dinh nghia style cart header*/
+    div.divCart {
+    width: 220px;
+    height: 100px;
+    margin-right: 0px;
+    background-image:  url("../imgs/divcart.png");
+
+    /*Do bong*/
+    /*-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);*/
+
+    }
+
+    li.div-cart{
+        background-color:#F4434A;
+        margin-left: 40px;
+        margin-right: 20px;
+        color: #F8F8F8;
+        padding: 10px 60px 10px 10px;
+    }
+
+span.link-toggle-1 {
+        display: none;
+    }
+.link-toggle-2 {
+    display: none;
+    }
+
+.link-toggle-3 {
+    display: none;
+    }
+.toggle-3 {
+    display: none;
+    }
+
+.toggle-1 {
+    display: none;
+    }
+
+@media only screen and (max-width: 700px){
+
+    span.link-toggle-1 {
+        display: block;
+
+    }
+    .toggle-1{
+        width: 100%;
+        background-color: #BDC3C7;
+    }
+    .toggle-1 ul li{
+        float: none;
+        border-bottom: 1px solid #F8F8F8;
+        list-style-type: none;
+        font-size: 120%;
+
+    }
+    .toggle-1 ul li a{
+        text-decoration: none;
+    }
+    span.link-toggle-2 {
+        display: block;
+    }
+    a.link-toggle-3{
+        display: block;
+        text-decoration: none;
+        background-color: #262626;
+        color: #F8F8F8;
+        text-align: center;
+        font-size: 140%;
+        padding: 8px;
+    }
+    .mainHeader {
+        display: none;
+    }
+    div.secondHeader {
+        display: none;
+    }
+    div.secondHeader ul li {
+        background-color:#262626;
+        float: none;
+        width: 100%;
+        /*border-bottom: 2px solid #d5dce4;*/
+
+
+    }
+
+}
+
+/*.mainHeader .secondHeader{
+        display: none;
+    }*/
+
+
+
+
+/*Dinh nhia logo o giua*/
+.logo-header{
+background-color:#DDE3E6;
+text-align: center;
+}
+.logo-header img{
+max-width: 200px;
+width: 100%;
+background-color: transparent;
+height: 110;
+top:0;
+margin-top: 0px;
+}
+.item-right{
+    float:right;
+
+}
+
+
+
+/*//Dinh nghia style textSearch*/
+.textSearch{
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+    height: 40px;
+    font-size: 120%;
+}
+/*measeage flash*/
+.message{
+    width: 100%;
+    max-width: 300px;
+    min-width: 100px;
+    float: right;
+    display: block;
+    position: absolute;
+    top:50px;
+    right: 40px;
+    height: 40px;
+    opacity: 0.5;
+    color: #ecf0f1;
+    /*mau chu*/
+
+    /*Tao do bo goc va mat boredr*/
+   /*
+
+    */
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 35px 5px 5px 5px;
+
+
+    border: 0px solid #000000;
+
+
+
+
+}
+
+
+
+
+.message h3{
+    padding: 10px 20px 20px;
+
+}
+
+
+.info{
+    background-color: #3498db;
+
+}
+.error{
+    background-color: #e74c3c;
+}
+
+.warning{
+    background-color: #f39c12;
+}
+
+.success{
+    background-color: #2ecc71;
+
+}
+

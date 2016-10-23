@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Calculating Order Form Totals in  JavaScript</TITLE>
+<META NAME="AUTHOR" CONTENT="Paul McFedries">
+<META HTTP-EQUIV="Description" NAME="Description" CONTENT="A JavaScript routine that calculates a running total for an order form"
+<META HTTP-EQUIV="Keywords" NAME="Keywords" CONTENT="Paul McFedries, JavaScript, order form, total, calculation">
+
+</HEAD>
+
+<LINK REL="stylesheet" TYPE="text/css" HREF="/stylesheet.css">
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+/* This script is Copyright (c) Paul McFedries and 
+Logophilia Limited (http://www.mcfedries.com/).
+Permission is granted to use this script as long as 
+this Copyright notice remains in place.*/
+
+function IncreaseQuantity(form_field_name) {
+
+    var frm = document.getElementById('OrderForm')
+
+    // Run through all the form fields
+    for (var i=0; i < frm.elements.length; ++i) {
+
+        // Get the current field
+        form_field = frm.elements[i]
+
+        // Is it the product field?
+        if (form_field.name == form_field_name) {
+
+            // If so, increment the quantity
+            form_field.value++
+        }
+    }
+    
+    //Recalculate the order total
+    CalculateTotal(frm)
+
+}
+
+function DecreaseQuantity(form_field_name) {
+
+    var frm = document.getElementById('OrderForm')
+
+    // Run through all the form fields
+    for (var i=0; i < frm.elements.length; ++i) {
+
+        // Get the current field
+        form_field = frm.elements[i]
+
+        // Is it the product field?
+        if (form_field.name == form_field_name) {
+
+            // If so, decrement the quantity, but don't go below 0
+            if (form_field.value > 0) {
+                form_field.value--
+            }
+        }
+    }
+
+    //Recalculate the order total
+    CalculateTotal(frm)
+
+}
+
+function CalculateTotal(frm) {
+    var order_total = 0
+
+    // Run through all the form fields
+    for (var i=0; i < frm.elements.length; ++i) {
+
+        // Get the current field
+        form_field = frm.elements[i]
+
+        // Get the field's name
+        form_name = form_field.name
+
+        // Is it a "product" field?
+        if (form_name.substring(0,4) == "PROD") {
+
+            // If so, extract the price from the name
+            item_price = parseFloat(form_name.substring(form_name.lastIndexOf("_") + 1))
+
+            // Get the quantity
+            item_quantity = parseInt(form_field.value)
+
+            // Update the order total
+            if (item_quantity >= 0) {
+                order_total += item_quantity * item_price
+            }
+        }
+    }
+
+    // Display the total rounded to two decimal places
+    frm.TOTAL.value = round_decimals(order_total, 2)
+}
+
+function round_decimals(original_number, decimals) {
+    var result1 = original_number * Math.pow(10, decimals)
+    var result2 = Math.round(result1)
+    var result3 = result2 / Math.pow(10, decimals)
+    return pad_with_zeros(result3, decimals)
+}
+
+function pad_with_zeros(rounded_value, decimal_places) {
+
+    // Convert the number to a string
+    var value_string = rounded_value.toString()
+    
+    // Locate the decimal point
+    var decimal_location = value_string.indexOf(".")
+
+    // Is there a decimal point?
+    if (decimal_location == -1) {
+        
+        // If no, then all decimal places will be padded with 0s
+        decimal_part_length = 0
+        
+        // If decimal_places is greater than zero, tack on a decimal point
+        value_string += decimal_places > 0 ? "." : ""
+    }
+    else {
+
+        // If yes, then only the extra decimal places will be padded with 0s
+        decimal_part_length = value_string.length - decimal_location - 1
+    }
+    
+    // Calculate the number of decimal places that need to be padded with 0s
+    var pad_total = decimal_places - decimal_part_length
+    
+    if (pad_total > 0) {
+        
+        // Pad the string with 0s
+        for (var counter = 1; counter <= pad_total; counter++) 
+            value_string += "0"
+        }
+    return value_string
+}
+
+
+//-->
+</script>
+
+<BODY MARGINWIDTH=0 MARGINHEIGHT=0 LEFTMARGIN=0 TOPMARGIN=0 BGCOLOR=#FFFFFF>
+
+<!--#include virtual="/header.txt"-->
+
+<CENTER><TABLE WIDTH=610 CELLSPACING=0 CELLPADDING=0><TR><TD><IMG SRC="/Graphics/spacer.gif" HEIGHT=1 WIDTH=610><BR>
+
+<FONT FACE="Arial, Verdana, Helvetica, MS Sans Serif" COLOR=#000088 SIZE=+2 CLASS="TitleText">
+<B>Calculating Order Form Totals</B>
+</FONT>
+<P>
+
+<HR>
+The script on this page displays a running total for an order form. Each time the user changes the quantity they want to order, the TOTAL field is updated automatically. Give it a whirl:
+<P>
+
+<FORM id="OrderForm" action="../php/get-form-fields.php" method="get">
+
+<H3>YEAST FREE BREADS AND BAGELS</H3>
+
+
+<TABLE BORDER =3>
+
+<TD COLSPAN=3><B>WHEAT ALTERNATIVES-yeast-free, fat-free*</B></TD>
+
+<TR><TD ALIGN="CENTER"><B>Please <BR>
+enter <BR>
+quantity:</FONT></TD>
+<TD ALIGN="CENTER"><B>Description</TD><TD ALIGN="CENTER"><B>Price<BR>
+(each)</B></TD></TR>
+<TR>
+<TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_SP_4.99')"><img src="/graphics/minus.png" border=0/></a><INPUT TYPE=TEXT NAME="PROD_SP_4.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_SP_4.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Spelt Bread 24 oz</TD><TD ALIGN="RIGHT">$4.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_SPMG_4.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_SPMG_4.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_SPMG_4.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Spelt Multi-Grain Bread* 24 oz</TD><TD ALIGN="RIGHT">$4.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_SPCR_4.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_SPCR_4.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_SPCR_4.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Spelt Cinnamon-Raisin Bread 24 oz</TD><TD ALIGN="RIGHT">$4.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_SW_3.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_SW_3.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_SW_3.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Spelt White Bread* 18 oz</TD><TD ALIGN="RIGHT">$3.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_SWMG_3.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_SWMG_3.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_SWMG_3.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Spelt White Multi-Grain Bread* with Flax Seeds 18 oz</TD><TD ALIGN="RIGHT">$3.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_RY_4.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_RY_4.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_RY_4.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Rye Bread (Wheat Free, not sliced) 24 oz</TD><TD ALIGN="RIGHT">$4.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_KT_4.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_KT_4.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_KT_4.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Kamut<FONT  SIZE=1  COLOR=#000000>&#174;</FONT> Bread 24 oz</TD><TD ALIGN="RIGHT">$4.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_KCR_4.50')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_KCR_4.50" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_KCR_4.50')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Kamut Cinnamon-Raisin Bread 24 oz</TD><TD ALIGN="RIGHT">$4.50</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_KA_4.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_KA_4.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_KA_4.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Kamut Almond-Raisin Bread* 24 oz</TD><TD ALIGN="RIGHT">$4.99</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><a href="javascript:DecreaseQuantity('PROD_AG_2.99')"><img src="/graphics/minus.png" border=0/><INPUT TYPE=TEXT NAME="PROD_AG_2.99" SIZE=3 MAXLENGTH=3 value=0 onChange="CalculateTotal(this.form)"><a href="javascript:IncreaseQuantity('PROD_AG_2.99')"><img src="/graphics/plus.png" border="0" /></a></TD><TD>Ancient Grains Bread 18 oz <FONT FACE="Calamari" SIZE=4  COLOR=#008000>NEW!</FONT></TD><TD ALIGN="RIGHT">$2.99</TD>
+<TR><TD><BR></TD><TD>TOTAL</TD><TD ALIGN="RIGHT"><INPUT TYPE=TEXT NAME=TOTAL SIZE=10 onFocus="this.form.elements[0].focus()"></TD>
+
+</TABLE>
+<P>
+
+<INPUT TYPE=RESET VALUE="CLEAR FORM"> <INPUT TYPE=SUBMIT VALUE="SUBMIT ORDER">
+
+</FORM>
+
+<HR>
+Here's what you have to do to get things to work:
+<OL>
+<LI>Set up a special NAME for each item. Here's the general format to use
+<P>
+<TT>PROD_<I>ProductID</I>_<I>Price</I></TT>
+<P>
+Here, <I>ProductID</I> is a unique ID code that enables you to determine which product the customer ordered, and <I>Price</I> is the price of the item (without the dollar sign). Here's an example for a product with the code "SP" and a price of $4.99:
+<P>
+<TT>PROD_SP_4.99</TT>
+<P>
+<LI>For each TEXT box, add the following:
+<P>
+<TT>onChange="CalculateTotal(this.form)"</TT>
+<P>
+Here's an example TEXT box tag:
+<P>
+<TT>&lt;INPUT TYPE=TEXT NAME="PROD_SP_4.99" onChange="CalculateTotal(this.form)"&gt;</TT>
+<P>
+<LI>Add a TOTAL field at the end of the form. Name this field "TOTAL", like so
+<P>
+<TT>&lt;INPUT TYPE=TEXT NAME=TOTAL SIZE=10 onFocus="this.form.elements[0].focus()"&gt;</TT>
+<P>
+This field will display the total. Note, too, that the onFocus event is used to ensure that the user can't edit the field.
+<P>
+<LI>Add the following JavaScript code within the header section (that is between the &lt;HEAD&gt; and &lt;/HEAD&gt; tags) of your page:
+</OL>
+<PRE>
+&lt;script language="JavaScript" type="text/javascript"&gt;
+&lt;!--
+
+/* This script is Copyright (c) Paul McFedries and 
+Logophilia Limited (http://www.mcfedries.com/).
+Permission is granted to use this script as long as 
+this Copyright notice remains in place.*/
+
+function CalculateTotal(frm) {
+    var order_total = 0
+
+    // Run through all the form fields
+    for (var i=0; i < frm.elements.length; ++i) {
+
+        // Get the current field
+        form_field = frm.elements[i]
+
+        // Get the field's name
+        form_name = form_field.name
+
+        // Is it a "product" field?
+        if (form_name.substring(0,4) == "PROD") {
+
+            // If so, extract the price from the name
+            item_price = parseFloat(form_name.substring(form_name.lastIndexOf("_") + 1))
+
+            // Get the quantity
+            item_quantity = parseInt(form_field.value)
+
+            // Update the order total
+            if (item_quantity >= 0) {
+                order_total += item_quantity * item_price
+            }
+        }
+    }
+
+    // Display the total rounded to two decimal places
+    frm.TOTAL.value = round_decimals(order_total, 2)
+}
+
+function round_decimals(original_number, decimals) {
+    var result1 = original_number * Math.pow(10, decimals)
+    var result2 = Math.round(result1)
+    var result3 = result2 / Math.pow(10, decimals)
+    return pad_with_zeros(result3, decimals)
+}
+
+function pad_with_zeros(rounded_value, decimal_places) {
+
+    // Convert the number to a string
+    var value_string = rounded_value.toString()
+    
+    // Locate the decimal point
+    var decimal_location = value_string.indexOf(".")
+
+    // Is there a decimal point?
+    if (decimal_location == -1) {
+        
+        // If no, then all decimal places will be padded with 0s
+        decimal_part_length = 0
+        
+        // If decimal_places is greater than zero, tack on a decimal point
+        value_string += decimal_places > 0 ? "." : ""
+    }
+    else {
+
+        // If yes, then only the extra decimal places will be padded with 0s
+        decimal_part_length = value_string.length - decimal_location - 1
+    }
+    
+    // Calculate the number of decimal places that need to be padded with 0s
+    var pad_total = decimal_places - decimal_part_length
+    
+    if (pad_total > 0) {
+        
+        // Pad the string with 0s
+        for (var counter = 1; counter <= pad_total; counter++) 
+            value_string += "0"
+        }
+    return value_string
+}
+
+//--&gt;
+&lt;/script&gt;
+</PRE>
+<HR>
+
+<!--#include virtual="/address.txt"-->
+
+ 
+
+</TD></TR></TABLE>
+</BODY>
+</HTML>
